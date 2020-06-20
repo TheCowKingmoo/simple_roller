@@ -26,74 +26,78 @@ fn main() {
 
     for input in inputs  {
         println!("{}", input);
-        let returnTuple = parseInput(input);
-        println!("numdice = {}", returnTuple.0);
-        println!("dicetype = {}", returnTuple.1);
+        let return_tuple = parse_input(input);
+        println!("numdice = {}", return_tuple.0);
+        println!("dice_type = {}", return_tuple.1);
 
     }
 
 }
 
 
-fn parseInput(input: String) -> (u32, u32)  {
-    let mut numberOfDice = Vec::new();
-    let mut diceType = Vec::new();
+fn parse_input(input: String) -> (u32, u32)  {
+    let mut number_of_dice = Vec::new();
+    let mut dice_type = Vec::new();
     
     const ASCIIFIX: u32 = 48;
 
-    let mut diceNumFlag = false;
-    let mut diceTypeFlag = false;
-    let mut dCharFlag = false;
+    let mut dice_num_flag = false;
+    let mut d_char_flag = false;
 
     for character in input.chars()  {
       //convert char to u32
       let converted: u32 = u32::from(character) - ASCIIFIX;
 
-      //check if char is an integer
-      if( converted > 9 || converted < 0)  {
+      //check if char is an integer - no need to check lower as we are using u32
+      if converted > 9 {
           println!("finished with ints");
 
           //check if we got a number first
-          if(numberOfDice.len() < 1)  {
+          if number_of_dice.len() < 1  {
               println!("no numbers before char input");
               return (0, 0);
+
+         // triggers if we get non number input after we get dice type
+          }  else if dice_type.len() > 1  {
+            println!("too much input");
+            return (0, 0);
           }
 
           //check if this is our single D character
-          if( dCharFlag == false && (character == 'd' || character == 'D') )  {
-              dCharFlag = true;
-              diceNumFlag = true;
+          if d_char_flag == false && (character == 'd' || character == 'D') {
+              d_char_flag = true;
+              dice_num_flag = true;
               println!("D is there");
           }  else  {
               println!("bad input");
           }
 
       //this is still the first set of numbers so we add to numDice
-      }  else if(diceNumFlag == false) {
-        numberOfDice.push(converted);
-    //this is the second set of numbers so we add to diceType
+      }  else if dice_num_flag == false {
+        number_of_dice.push(converted);
+    //this is the second set of numbers so we add to dice_type
       }  else  {
-          diceType.push(converted);
+          dice_type.push(converted);
       }
 
       println!("{}", converted);
     }  //end for loop
-    let returnValues = (convertU32VecToU32(numberOfDice.as_mut_slice()), convertU32VecToU32(diceType.as_mut_slice()));
-    return returnValues;
+    let return_values = (convert_vector_of_u32_to_single_u32(number_of_dice.as_mut_slice()), convert_vector_of_u32_to_single_u32(dice_type.as_mut_slice()));
+    return return_values;
 
-}  //end parseInput
+}  //end parse_input
 
 
 
-fn convertU32VecToU32(inputVector: &mut [u32]) -> u32  {
-  let mut returnValue: u32 = 0;
+fn convert_vector_of_u32_to_single_u32(input_vector: &mut [u32]) -> u32  {
+  let mut return_value: u32 = 0;
   let mut i = 1;
 
-  let l: u32 =  inputVector.len() as u32;
+  let l: u32 =  input_vector.len() as u32;
 
-  for input in inputVector  {
-    returnValue += *input * 10u32.pow(l - i);
+  for input in input_vector  {
+    return_value += *input * 10u32.pow(l - i);
     i += 1;
   }
-  return returnValue;
+  return return_value;
 }
