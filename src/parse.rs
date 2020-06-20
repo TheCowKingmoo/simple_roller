@@ -1,8 +1,4 @@
 
-
-
-
-
 pub fn parse_input(input: String) -> (u32, u32)  {
     let mut number_of_dice = Vec::new();
     let mut dice_type = Vec::new();
@@ -64,4 +60,16 @@ fn convert_vector_of_u32_to_single_u32(input_vector: &mut [u32]) -> u32  {
     i += 1;
   }
   return return_value;
+}
+
+#[test]
+fn test_vector_of_u32_to_single_u32() {
+    let mut input = Vec::new();
+    input.push(1);
+    input.push(0);
+    input.push(0);
+    input.push(1);
+    let actual = 1001;
+    let return_value = convert_vector_of_u32_to_single_u32(input.as_mut_slice());
+    assert_eq!(actual, return_value);
 }
