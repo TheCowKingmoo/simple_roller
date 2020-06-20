@@ -8,6 +8,12 @@ pub fn parse_input(input: String) -> (u32, u32)  {
     let mut dice_num_flag = false;
     let mut d_char_flag = false;
 
+
+    if input.len() < 3  {
+        println!("str not long enough to do anything with");
+        return (0, 0);
+    }
+
     for character in input.chars()  {
       //convert char to u32
       let converted: u32 = u32::from(character) - ASCIIFIX;
@@ -31,6 +37,7 @@ pub fn parse_input(input: String) -> (u32, u32)  {
               dice_num_flag = true;
           }  else  {
               println!("error - bad input");
+              return (0, 0);
           }
 
       //this is still the first set of numbers so we add to numDice
@@ -72,4 +79,53 @@ fn test_vector_of_u32_to_single_u32() {
     let actual = 1001;
     let return_value = convert_vector_of_u32_to_single_u32(input.as_mut_slice());
     assert_eq!(actual, return_value);
+}
+
+#[test]
+fn test_parse_input_no_int() {
+    let input = "test".to_string();
+    let expected = (0, 0);
+    let return_value = parse_input(input);
+    assert_eq!(expected, return_value);
+}
+
+#[test]
+fn test_parse_input_one_int() {
+    let input = "1D".to_string();
+    let expected = (0, 0);
+    let return_value = parse_input(input);
+    assert_eq!(expected, return_value);
+}
+
+#[test]
+fn test_parse_input_no_input() {
+    let input = "".to_string();
+    let expected = (0, 0);
+    let return_value = parse_input(input);
+    assert_eq!(expected, return_value);
+}
+
+#[test]
+fn test_parse_input_one_int_two_d() {
+    let input = "1DD".to_string();
+    let expected = (0, 0);
+    let return_value = parse_input(input);
+    assert_eq!(expected, return_value);
+}
+
+
+#[test]
+fn test_parse_input_no_d() {
+    let input = "1R20".to_string();
+    let expected = (0, 0);
+    let return_value = parse_input(input);
+    assert_eq!(expected, return_value);
+}
+
+#[test]
+fn test_parse_input_regular_input() {
+    let input = "1D20".to_string();
+    let expected = (1, 20);
+    let return_value = parse_input(input);
+    assert_eq!(expected, return_value);
 }
