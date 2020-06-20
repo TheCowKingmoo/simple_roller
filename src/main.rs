@@ -30,7 +30,7 @@ fn main() {
 
     for tuple in roll_tuples  {
         println!("rolling for D{}", tuple.1);
-        for i in 0..tuple.0  {
+        for _i in 0..tuple.0  {
             println!("{}", rng.gen_range(1, tuple.1 + 1));
         }
     }
