@@ -31,17 +31,19 @@ fn main() {
     // grab all inputs for errors before actually rolling
     let tuple_return = parse::parse_roll_message(input_string);
 
+    let num_roll = tuple_return.0;
+    let dice_type = tuple_return.1;
+    let add_on = tuple_return.2;
+    let args = tuple_return.3;
+    let err_string = tuple_return.4;
+
     let mut print_string: String = String::new();
     let mut a_flag = false;
 
-    println!("{}", tuple_return.0);
-    println!("{}", tuple_return.1);
-    println!("{}", tuple_return.2[0]);
-    println!("{}", tuple_return.3);
-    if tuple_return.3 != ""  {
-        print_string = tuple_return.3;
+    if err_string != ""  {
+        print_string = err_string;
     }  else  {
-        for character in tuple_return.2  {
+        for character in args  {
             if character == 'a'  {
                 a_flag = true;
             }
@@ -49,9 +51,9 @@ fn main() {
 
         if a_flag == true  {
             println!("avg");
-            print_string = roll::avg_roller(tuple_return.0, tuple_return.1);
+            print_string = roll::avg_roller(num_roll, dice_type, add_on);
         }  else  {
-          print_string = roll::print_all_rolls(tuple_return.0, tuple_return.1);
+          print_string = roll::print_all_rolls(num_roll, dice_type, add_on);
         }
         
     }
