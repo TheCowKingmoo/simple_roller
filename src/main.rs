@@ -13,24 +13,50 @@ fn main() {
     } 
 
     let mut _path = "";
-    let mut inputs = Vec::new();
     let mut i = 0;
+    let mut input_string = String::new();
+
     for argument in env::args() {
         if i == 0  {
             _path = &argument;
+            input_string.push_str("~roll");
         }  else  {
-            inputs.push(argument);
+            input_string.push_str(" ");
+            input_string.push_str(&argument);
         }
         i += 1;
     }
 
-    let mut roll_tuples = Vec::new();
-
+    println!("{}", input_string);
     // grab all inputs for errors before actually rolling
-    for input in inputs  {
-        roll_tuples.push(parse::parse_input(input));
+    let tuple_return = parse::parse_roll_message(input_string);
+
+    let mut print_string: String = String::new();
+    let mut a_flag = false;
+
+    println!("{}", tuple_return.0);
+    println!("{}", tuple_return.1);
+    println!("{}", tuple_return.2[0]);
+    println!("{}", tuple_return.3);
+    if tuple_return.3 != ""  {
+        print_string = tuple_return.3;
+    }  else  {
+        for character in tuple_return.2  {
+            if character == 'a'  {
+                a_flag = true;
+            }
+        }
+
+        if a_flag == true  {
+            println!("avg");
+            print_string = roll::avg_roller(tuple_return.0, tuple_return.1);
+        }  else  {
+          print_string = roll::print_all_rolls(tuple_return.0, tuple_return.1);
+        }
+        
     }
 
-    roll::print_and_roll(roll_tuples.as_mut_slice());
+    println!("{}", print_string);
+
 
 }
